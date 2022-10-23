@@ -24,7 +24,7 @@ def get_args_parser(add_help=True):
     parser.add_argument('--conf-thres', type=float, default=0.4, help='confidence threshold for inference.')
     parser.add_argument('--iou-thres', type=float, default=0.45, help='NMS IoU threshold for inference.')
     parser.add_argument('--max-det', type=int, default=1000, help='maximal inferences per image.')
-    parser.add_argument('--device', default='0', help='device to run our model i.e. 0 or 0,1,2,3 or cpu.')
+    parser.add_argument('--device', default='cpu', help='device to run our model i.e. 0 or 0,1,2,3 or cpu.')
     parser.add_argument('--save-txt', action='store_true', help='save results to *.txt.')
     parser.add_argument('--save-img', action='store_false', help='save visuallized inference results.')
     parser.add_argument('--save-dir', type=str, help='directory to save predictions in. See --save-txt.')
@@ -108,7 +108,12 @@ def run(weights=osp.join(ROOT, 'yolov6s.pt'),
 
 
 def main(args):
-    run(**vars(args))
+    import time
+
+    start = time.time()
+    for _ in range(10):
+        run(**vars(args))   
+    LOGGER.info(f"Total time: {time.time() - start}")
 
 
 if __name__ == "__main__":
